@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto p-4">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold mb-6">Scrape Question</h2>
+        
+        <form method="POST" action="{{ url_for('scrape_question') }}">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="source">
+                    Source Website
+                </label>
+                <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                        id="source" name="source" required>
+                    <option value="leetcode">LeetCode</option>
+                    <option value="geeksforgeeks">GeeksforGeeks</option>
+                </select>
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="problem_url">
+                    Problem URL Path
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                       id="problem_url" name="problem_url" type="text" 
+                       placeholder="e.g. two-sum (for LeetCode) or two-sum-problem (for GeeksforGeeks)" required>
+                <p class="text-gray-600 text-xs mt-1">Enter just the last part of the URL after the domain</p>
+            </div>
+            
+            <div class="flex justify-end">
+                <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+                        type="submit">
+                    Scrape Question
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
