@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto p-4">
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold">Contest Dashboard</h2>
+            <div class="text-2xl font-bold text-red-500">
+                Time Remaining: <span id="timer">60:00</span>
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+                <div class="bg-blue-600 h-2.5 rounded-full" style="width: 0%" id="progress-bar"></div>
+            </div>
+            <p class="text-sm text-gray-600">Progress: <span id="progress-text">0/5</span> questions attempted</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {% for difficulty in ['Easy', 'Medium', 'Hard'] %}
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="font-semibold text-lg mb-2">{{ difficulty }} Questions</h3>
+                <ul class="space-y-2">
+                    {% for i in range(1, 4) %}
+                    <li>
+                        <a href="{{ url_for('question', id=loop.index) }}" 
+                           class="flex items-center justify-between p-2 hover:bg-gray-100 rounded">
+                            <span>Question {{ i }}</span>
+                            <span class="text-xs px-2 py-1 rounded-full 
+                                {% if i == 1 %}bg-green-100 text-green-800{% else %}bg-gray-100 text-gray-800{% endif %}">
+                                {% if i == 1 %}Solved{% else %}Pending{% endif %}
+                            </span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="flex justify-end">
+        <a href="{{ url_for('summary') }}" 
+           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            View Summary
+        </a>
+    </div>
+</div>
+
+<script>
+    // Timer functionality
+    let timeLeft = 60 * 60; // 60 minutes in seconds
+    const timerElement = document.getElementById('timer');
+    
+    function updateTimer() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            window.location.href = "{{ url_for('summary') }}";
+        } else {
+            timeLeft--;
+        }
+    }
+    
+    const timerInterval = setInterval(updateTimer, 1000);
+    updateTimer();
+</script>
+{% endblock %}
